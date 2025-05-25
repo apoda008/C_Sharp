@@ -1,4 +1,4 @@
-﻿using Packt.Shared;
+﻿using Packt.Shared; //to use Person
 
 //alias
 //using tx = Texas where Texas is the imported namespace
@@ -10,6 +10,18 @@ ConfigureConsole(); //sets current culture to US ENGLISH
 //configureConsole(culture: "fr-FR")
 
 
+
+/*
+ Example of aliasing:
+
+using France;
+using tx = Texas; //Tx become alias for Texas
+
+Paris p1 = new(); //comes from France, makes France.Paris
+Tx.Paris = new(); //Ccomes from Texas, makes Texas.Paris
+ 
+ 
+ */
 // Person bob = new Person() //C#1 or later 
 // var bob = new Person() //C#4 or later 
 
@@ -25,8 +37,19 @@ bob.Born = new DateTimeOffset(
     hour: 16, minute: 28, second: 0,
     offset: TimeSpan.FromHours(-5));
 
-WriteLine(format: "{0} was born on {1:D}.",
+WriteLine(format: "{0} was born on {1:D}.", //long Date
     arg0: bob.Name, arg1: bob.Born);
+
+//Object Initializer 
+Person Alice = new() {
+    Name = "Alice Jones",
+    Born = new(1998, 3, 7, 16, 28, 0,
+    //this is an optional offset from the UTC time zone
+    TimeSpan.Zero)
+};
+
+WriteLine(format: "{0} was born on {1:d}.", 
+    arg0: Alice.Name, arg1: Alice.Born);
 
 bob.FavoriteAncientWonder = WondersOfTheAncientWorld.StatueOfZeusAtOlympia;
 
