@@ -32,6 +32,7 @@ WriteLine(bob); //implicit call to ToString()
 
 bob.Name = "Bob Smith";
 
+
 bob.Born = new DateTimeOffset(
     year: 1965, month: 12, day: 22,
     hour: 16, minute: 28, second: 0,
@@ -101,3 +102,73 @@ WriteLine(format:
         arg1: gunny.HomePlanet,
         arg2: gunny.Instantiated
         );
+
+bob.WriteToConsole();
+WriteLine(bob.GetOrigin());
+
+//overloading
+WriteLine(bob.SayHello());
+WriteLine(bob.SayHello("Emily"));
+
+//optional para 
+WriteLine(bob.OptionalParamaters(3));
+WriteLine(bob.OptionalParamaters(3, "Jump!", 98.5));
+
+//when naming, order of declaration doesnt matter
+WriteLine(bob.OptionalParamaters(3, number: 52.7, command: "Hide!"));
+WriteLine(bob.OptionalParamaters(3, "Poke!", active: false));
+
+//para passing 
+int a = 10;
+int b = 20;
+int c = 30;
+int d = 40;
+
+WriteLine($"Before: a ={a}, b = {b}, c = {c}, d = {d}");
+
+bob.PassingParameters(a, b, ref c, out d);
+
+WriteLine($"After: a ={a}, b = {b}, c = {c}, d = {d}");
+
+int e = 50;
+int f = 60;
+int g = 70;
+
+WriteLine($"Before: e = {e}, f = {f}, g = {g}");
+
+//simplified C#7 of later syntax for the out para 
+bob.PassingParameters(e, f, ref g, out int h);
+WriteLine($"Before: e = {e}, f = {f}, g = {g}");
+
+(string, int) fruit = bob.GetFruit();
+
+WriteLine($"{fruit.Item1}, {fruit.Item2} there are.");
+
+var fruitNamed = bob.GetNamedFriut();
+WriteLine($"There are {fruitNamed.Number} {fruitNamed.Name}.");
+
+//to deconstruct tuples 
+(string name, int num) = bob.GetNamedFriut();
+
+WriteLine($"Name: {name} number: {num}");
+
+//deconstructor 
+var (name1, dob1) = bob; //Implicitly calls the deconstructor
+WriteLine($"Deconstructed person: {name1}, {dob1}");
+
+var (name2, dob2, fav2) = bob;
+WriteLine($"Deconstructed person: {name2}, {dob2}, {fav2}");
+
+//local funcs 
+//change to -1 to make the exept handling 
+
+int number = -5;
+
+try
+{
+    WriteLine($"{number}! is {Person.Factorial(number)}");
+}
+catch (Exception ex) 
+{
+    WriteLine($"{ex.GetType()} says: {ex.Message} number was {number}.");
+}
