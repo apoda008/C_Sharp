@@ -20,8 +20,8 @@ public partial class Person : object
     public readonly DateTime Instantiated;
 
     #endregion
-
-    public WondersOfTheAncientWorld FavoriteAncientWonder;
+    //This has been moved to PersonAutoGen as a prop
+    //public WondersOfTheAncientWorld FavoriteAncientWonder;
 
     public WondersOfTheAncientWorld BucketList;
 

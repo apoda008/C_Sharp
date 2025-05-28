@@ -1,4 +1,6 @@
-﻿using Packt.Shared; //to use Person
+﻿using System.Security.Cryptography.X509Certificates;
+using Microsoft.Win32.SafeHandles;
+using Packt.Shared; //to use Person
 
 //alias
 //using tx = Texas where Texas is the imported namespace
@@ -172,3 +174,61 @@ catch (Exception ex)
 {
     WriteLine($"{ex.GetType()} says: {ex.Message} number was {number}.");
 }
+
+//NEW PARTIAL CLASS SECTION 
+WriteLine();
+WriteLine("=================PARTIAL======================");
+WriteLine();
+
+Person Sam = new()
+{
+    Name = "Sam",
+    Born = new(1969, 6, 25, 0, 0, 0, TimeSpan.Zero)
+};
+
+WriteLine(Sam.Origin);
+WriteLine(Sam.Greeting);
+WriteLine(Sam.Age);
+
+string color = "Red";
+
+try
+{
+    Sam.FavoritePrimaryColor = color;
+    WriteLine($"Sam's fav prim color is {Sam.FavoritePrimaryColor}.");
+}
+catch (Exception ex)
+{
+    WriteLine("Tried to set {0} to '{1}':{2}", nameof(Sam.FavoritePrimaryColor), color, ex.Message);
+}
+
+//bob.FavoriteAncientWonder =
+//   WondersOfTheAncientWorld.StatueOfZeusAtOlympia |
+//   WondersOfTheAncientWorld.GreatPyramidOfGiza;
+
+//bob.FavoriteAncientWonder = (WondersOfTheAncientWorld)128;
+
+bob.FavoriteAncientWonder = WondersOfTheAncientWorld.StatueOfZeusAtOlympia;
+
+Sam.Children.Add(new()
+{
+    Name = "Charlie",
+    Born = new(2010, 3, 18, 0 , 0, 0, TimeSpan.Zero)
+});
+
+Sam.Children.Add(new()
+{
+    Name = "Ella",
+    Born = new(2020, 12, 24, 0, 0, 0, TimeSpan.Zero)
+});
+
+//Get using Children list \
+WriteLine($"Sam's first child is {Sam.Children[0].Name}");
+WriteLine($"Sam's second child is {Sam.Children[1].Name}");
+
+//get using indexer
+WriteLine($"Sam's first child is {Sam[0].Name}");
+WriteLine($"Sam's first child is {Sam[1].Name}");
+
+//Get using string index
+WriteLine($"Sam's child name ella is {Sam["Ella"].Age} years old.");
