@@ -232,3 +232,83 @@ WriteLine($"Sam's first child is {Sam[1].Name}");
 
 //Get using string index
 WriteLine($"Sam's child name ella is {Sam["Ella"].Age} years old.");
+
+//sn array containing a mix of passengers 
+Passenger[] passengers = {
+    new FirstClassPassenger {AirMiles = 1_419, Name = "Suman" },
+    new FirstClassPassenger {AirMiles = 16_562, Name = "Lucy"},
+    new BusinessClassPassenger {Name = "Dave"},
+    new CoachClassPassenger {CarryOnKG = 25.7, Name = "Dave"},
+    new CoachClassPassenger {CarryOnKG = 0, Name = "Amit" },
+};
+
+foreach (Passenger passenger in passengers) 
+{
+    decimal flightCost = passenger switch
+    {
+        /* C# 8 Syntax
+        FirstClassPassenger p when p.AirMiles > 35_000 => 1_500M,
+        FirstClassPassenger p when p.AirMiles > 15_000 => 1_750,
+        FirstClassPassenger _ => 2_000M, */
+        //C# 9 or later syntax
+        FirstClassPassenger p => p.AirMiles switch
+        {
+            > 35_000 => 1_500M,
+            > 15_000 => 1_750M,
+            _ => 2_000
+        },
+        
+        /*Can Also use to avoid switch statement 
+         FirstClassPassenger {AirMiles: > 35_000 } => 1500M
+         FirstClassPassenger {AirMiles: > 15_000 } => 1750M
+         FirstClassPassenger => 1500M
+         */
+
+        BusinessClassPassenger _ => 1_000M,
+        CoachClassPassenger p when p.CarryOnKG < 10.0 => 500M,
+        CoachClassPassenger _ => 650M,
+        _ => 800M
+    };
+    WriteLine($"Flights costs {flightCost:C} for {passenger}");
+}
+
+//init and immutable initialization 
+ImmutablePerson jeff = new()
+{
+    FirstName = "Jeff",
+    LastName = "Winger"
+};
+
+//jeff.FirstName = "Geoff";
+
+//Records and immutablility
+
+ImmutableVehicle car = new() 
+{ 
+    Brand = "Mazda MX-5 RF",
+    Color = "Soul Red Crystal Metallic",
+    Wheels = 4
+};
+
+ImmutableVehicle repaintedCar = car
+    with { Color = "Polymetal grey" };
+
+WriteLine($"Original car color was {car.Color}");
+WriteLine($"New car color is {repaintedCar.Color}");
+
+//NOTE Could release the memory for the car var and the repaintedcar would still exist
+
+//equality compare between class and record 
+AnimalClass ac1 = new() { Name = "rex" };
+AnimalClass ac2 = new() { Name = "rex" };
+
+WriteLine($"ac1 === ac2: {ac1 == ac2}");
+AnimalRecord ar1 = new() { Name = "rex" };
+AnimalRecord ar2 = new() { Name = "rex" };
+WriteLine($"ac1 === ac2: {ar1 == ar2}");
+
+ImmutableAnimal oscar = new("Oscar", "Lab");
+
+var (who, what) = oscar; //Calls the deconstructor method 
+WriteLine($"{who} is a {what}");
+

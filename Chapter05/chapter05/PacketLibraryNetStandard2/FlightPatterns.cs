@@ -31,6 +31,6 @@ public class CoachClassPassenger : Passenger
 
     public override string ToString() 
     { 
-        return $"Coach Class with {CarryOnKG: N2} KG carry on: {Name}";
+        return $"Coach Class with {CarryOnKG:N2} KG carry on: {Name}";
     }
 }
