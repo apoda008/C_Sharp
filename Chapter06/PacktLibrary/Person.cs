@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Packt.Shared;
 
-public class Person
+public class Person : IComparable<Person?>
 {
     #region Properties 
     public string? Name { get; set; }
@@ -141,8 +141,72 @@ public class Person
         //Return a reference to the baby that results from multipling 
         return Procreate(p1, p2);
     }
-    
     #endregion
+
+    #region
+    //delegate field to define the event 
+    public event EventHandler? Shout; //Null initially 
+
+    //data filed related to the event 
+    public int AngerLevel;
+
+    //method to trigger the even in certain conditions 
+    public void Poke() 
+    { 
+        AngerLevel++;
+        if (AngerLevel < 3) return;
+
+        //if something is listening to the event 
+        if (Shout is not null) 
+        { 
+            Shout(this, EventArgs.Empty);
+        }
+    }
+
+  
+    #endregion
+    /*=======NOTE+========
+     The 'in' keyword specifies that the type para T is contravariant which 
+    means that you can use a less derived type than that specified. for example, 
+    if employee derives from person then both can be compared with each other.  
+     */  
+    
+    public int CompareTo(Person? other)
+    {
+        int position;
+
+        if (other is not null)
+        {
+            if ((Name is not null) && (other.Name is not null))
+            {
+                //if both Name values are not null thenuse the string implementation of CompareTO
+                position = Name.CompareTo(other.Name);
+            }
+            else if ((Name is not null) && (other.Name is null))
+            {
+                position = -1; //this person precedes the other person
+            }
+            else if ((Name is null) && (other.Name is not null))
+            {
+                position = 1; //this person follows other person
+            }
+            else
+            {
+                position = 0; //this and other are at the same position 
+            }
+        }
+        else if (other is null) 
+        {
+            position = -1; //this person precedes other Person
+        }
+        else
+        {
+            position = 0; // this and other are at same position
+        }
+        return position;
+    }
+    //GOOD PRACTICE: if you want to sort an array or collection of instances of your type then implement
+    //the Icomparable interface
 
 
 } //end
