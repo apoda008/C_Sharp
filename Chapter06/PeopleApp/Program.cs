@@ -130,3 +130,88 @@ Array.Sort(people);
 
 OutputPeopleNames(people, "After Sorting using Person's IComparable implementation");
 
+//using the other compare 
+Array.Sort(people, new PersonComparer());
+
+OutputPeopleNames(people, "After sorting using person comparere's ICOMPARER implementation");
+
+/* MEMORY REVIEW
+ * Stack mem is faster to work with but limited in size/ It is fast becuz is it managed directly 
+ * by the CPU and uses a last-in, first-out mechanism so it is more likely to have data in its 
+ * L1 and L2 cache. Heap mem is slower but much more plentiful
+ 
+ *default stack size is 1MB. three keywords to define obj types: class, record, and struct. One 
+ *difference is how mem is allocated 
+ *--When you define a type record or class, you define a REFERENCE typ. Means that all the mem 
+ *for the obj itself is allocated on the heap, and only the mem addr of the obj is stored on the 
+ *stack. 
+ *--When you define a record struct or struct you define a VALUE typ. Means the mem for the obj 
+ *itself is allocated to the stack. If a struct uses field types that are not of the struct type, 
+ *then those fields will be stored on the heap. meaning the data for that ohn is stored in both 
+ *the stack and the heap
+ 
+ *Apart from the differences in terms of where me the data for a type is stored, the other major 
+ *differences are that you cannot inherit from a struct, and struct obj are compared for equality 
+ *using values instead of mem addresses
+ 
+ *When the method completes, all the stack mem is automatically released from the top of the stack 
+ 
+ *BOXING in C# is when a value type is moved to heap mem and wrapped inside a System.Object 
+ *instance. Unboxing is when that value is moved back onto the stack. Unboxing happens explicitly. 
+ *Boxing happens implicitly, so it can happen without the dev realizing. Boxing can take up to 20 
+ *times longer than without boxing
+ *EXAMPLE:
+ 
+    int n = 3;
+    object o = n; //boxing happens implicitly 
+    n = (int)o; //Unboxing only happens explicitly
+ */
+
+
+//Equality of types
+int a = 3;
+int b = 3;
+
+WriteLine($"a: {a}. b: {b}");
+WriteLine($"a == b: {a==b}");
+
+Person p1 = new() { Name = "Kevin" };
+Person p2 = new() { Name = "Kevin" };
+
+WriteLine($"p1: {p1}, p2: {p2}");
+WriteLine($"p1.name: {p1.Name}, p2.name {p2.Name}");
+WriteLine($"p1 == p2: {p1 == p2}");
+
+//this fails because they are not the same obj. if both vars literally pointed to the same obj on the
+//heap then it would be equal 
+
+Person p3 = p1;
+WriteLine($"p1: {p1}, p2: {p3}");
+WriteLine($"p1.name: {p1.Name}, p2.name {p3.Name}");
+WriteLine($"p1 == p2: {p1 == p3}");
+
+//strings do not follow this convention 
+
+//Alternatively use record class because one of its benefits is that it implements this equality behavior
+
+//defining struct types 
+
+DisplacementVector dv1 = new(3, 5);
+DisplacementVector dv2 = new(-2, 7);
+DisplacementVector dv3 = dv1 + dv2;
+
+WriteLine($"({ dv1.X}, {dv1.Y}) +({ dv2.X}, {dv2.Y}) = ({dv3.X}, {dv3.Y})");
+
+DisplacementVector dv4 = new();
+WriteLine($"({dv4.X}, {dv4.Y})");
+
+DisplacementVector dv5 = new(3, 5);
+WriteLine($"dv1.equals(dv5): {dv1.Equals(dv5)}");
+WriteLine($"dv1 === dv2: {dv1 == dv5}");
+
+//GOOD PRACTICE: if the total mem used by all the fields in your type is 16 bytes or less, your 
+//type only uses value types for its fields, and you will never want to derive from your type, then 
+//microsoft recommends that you use struct. if you type uses more than 16 of stack mem, it uses
+//reference types for its fields or you might want to inhereit from it using class
+
+
