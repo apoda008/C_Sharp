@@ -214,4 +214,20 @@ WriteLine($"dv1 === dv2: {dv1 == dv5}");
 //microsoft recommends that you use struct. if you type uses more than 16 of stack mem, it uses
 //reference types for its fields or you might want to inhereit from it using class
 
+//INHERITING FROM CLASSES 
+Employee john = new()
+{
+    Name = "John Jones",
+    Born = new(year: 1990, month: 7, day: 28, hour: 0, minute: 0, second: 0, offset: TimeSpan.Zero)
+};
+WriteLine();
+WriteLine("===============================================");
+john.WriteToConsole();
 
+john.EmployeeCode = "JJ001";
+john.HireDate = new(year: 2014, month: 11, day: 23);
+
+WriteLine($"{john.Name} was hired on {john.HireDate:yyyy-MM-dd}");
+
+//overloading
+WriteLine(john.ToString());

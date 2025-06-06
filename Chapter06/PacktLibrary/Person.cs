@@ -207,7 +207,19 @@ public class Person : IComparable<Person?>
     }
     //GOOD PRACTICE: if you want to sort an array or collection of instances of your type then implement
     //the Icomparable interface
+    #region Override methods 
 
+    public override string ToString()
+    {
+        return $"{Name} is a {base.ToString()}.";
+    }
+    /*GOOD PRATICE
+    Many real world apis require the properties that you define in your classes to marked as virtual so 
+    that they can be overriden. Carefully decide which of your method and property members should marked 
+    as virtual
+     */
+
+    #endregion
 
 } //end
 
