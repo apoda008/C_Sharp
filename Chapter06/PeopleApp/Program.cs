@@ -1,4 +1,6 @@
-﻿using Packt.Shared;
+﻿using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using Packt.Shared;
 
 Person harry = new()
 {
@@ -231,3 +233,127 @@ WriteLine($"{john.Name} was hired on {john.HireDate:yyyy-MM-dd}");
 
 //overloading
 WriteLine(john.ToString());
+
+Employee aliceInEmployee = new() 
+    { Name = "Alice", EmployeeCode = "AA123" };
+
+Person aliceInPerson = aliceInEmployee;
+
+aliceInEmployee.WriteToConsole();
+aliceInPerson.WriteToConsole();
+WriteLine(aliceInEmployee.ToString());
+WriteLine(aliceInPerson.ToString());
+
+//Implicit and explicit casting 
+
+//EXPLICIT
+//Employee explicitAlice = (Employee)aliceInPerson;
+
+//using is to check a type
+//if (aliceInPerson is Employee) 
+//{ 
+//    WriteLine($"{nameof(aliceInPerson)} is an Employee");
+
+//    Employee explicitAlice = (Employee)aliceInPerson;
+
+//    //Safely do something with explicitAlice
+//}
+
+//another way to do it
+if (aliceInPerson is Employee explicitAlice) 
+{ 
+    WriteLine($"{nameof(aliceInPerson)} is an Employee");
+
+    //safely do something with explicitAlice
+}
+
+//can use the "as" keyword 
+Employee? aliceAsEmployee = aliceInPerson as Employee;
+
+if (aliceAsEmployee is not null) 
+{
+    WriteLine($"{nameof(aliceInPerson)} as an Employee");
+    
+    //safely do something with aliceAsEmployee 
+}
+
+//since accessing a member of a null variable will throw a NullReferenceException error, 
+//you should always check for null before using the result.
+
+/*GOOD PRACTICE
+ Use the is and as keywords to avoid throwing exceptions when casting between derived 
+types. if you dont do this, you must write try-catch statements for INvalidCastException
+ */
+
+try
+{
+    john.TimeTravel(when: new(1999, 12, 31));
+    john.TimeTravel(when: new(1950, 12, 25));
+}
+catch (PersonException ex) 
+{ 
+    WriteLine(ex.Message);
+}
+
+/*WHen defining your own exceptions, give them the same three constructors that explicitly 
+ * call the built0in ones in System.Exception. Other exceptions that you might inherit 
+ * from may have more
+*/
+
+//STATIC METHODS
+WriteLine();
+WriteLine();
+
+
+string email1 = "pamel@test.com";
+string email2 = "ian&test.com";
+
+WriteLine("{0} is a velid email address: {1}",
+    arg0: email1,
+    arg1: StringExtensions.isValidEmail(email1));
+
+
+WriteLine("{0} is a velid email address: {1}",
+    arg0: email2,
+    arg1: StringExtensions.isValidEmail(email2));
+
+//using extension
+WriteLine("{0} is a velid email address: {1}",
+    arg0: email1,
+    arg1: email1.isValidEmail());
+WriteLine("{0} is a velid email address: {1}",
+    arg0: email2,
+    arg1: email2.isValidEmail());
+
+//Noe the subtle simplification in the syntax to call the IsValidEmail method. The older,
+//longer syntax still works too
+
+/*Extension methods cannot replave or override existing instance methods. You cannot for 
+ * example, redefine Insert method. The extension method will appear as an overload in 
+ * IntelliSense, but an instance method will be called in preference to an extension 
+ * method with the same name and signature
+*/
+
+//MUTABILITY
+
+C1 c1 = new() { Name = "Bob" };
+c1.Name = "Bill";
+
+//C2 c2 = new() { Name = "Bob" };
+//c2.Name = "Bill"; //CS8852: Init-only property
+
+S1 s1 = new() { Name = "Bob" };
+s1.Name = "Bill";
+
+
+S2 s2 = new() { Name = "Bob" };
+s2.Name = "Bill";
+
+//S3 s3 = new() { Name = "Bob" };
+//s3.Name = "Bill";
+
+/*
+ -Inherit- implies some functionality that a subclass gets 'for free' by inheriting from 
+its -base- aka -superbass-.IMPLEMENT implies some functionality that is NOT inherited but 
+instead MUST be provided by the subclass. 
+ */
