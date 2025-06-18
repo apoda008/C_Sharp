@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+	  <RuntimeIdentifiers>
+		  win-x64;osx-x64;osx-arm64;linux-x64;linux-arm64
+	  </RuntimeIdentifiers>
+
+	  <DebugType>embedded</DebugType>
+
+	  <PublishTrimmed>true</PublishTrimmed>
+	  <!-- Enabled trimming
+		in the command line:
+		dotnet publish ... -p:PublishTrimme=True
+		[type-level, member-level
+	  -->
+
+	  <TrimMode>partial</TrimMode> <!--Set assembly level trimming 
+		in the command line: 
+		dotnet publish ... -p:PublishTrimmed=True -p:TrimMode=partial
+	  -->
+	  
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+    <ItemGroup>
+		<Using Include="System.Console" Static="true" />
+	
+	</ItemGroup>
+</Project>
