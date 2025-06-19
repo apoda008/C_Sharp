@@ -9,6 +9,12 @@
 	
 	<ItemGroup>
 		<Using Include="System.Console" Static="true" />
-		<Using Remove="System"/>
+		<Using Remove="System" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Packt.CSdotnet.Sharedlibrary" Version ="9.0.0" />
+		<!-- Microsoft guarantees that if you fix your dependencies to what 
+		ships with a specific version of .NET, for example 8.0.0 those 
+		packages will all work together. ALmost always fix your dependencies, 
+		especially in prod deployments-->
 	</ItemGroup>
 </Project>

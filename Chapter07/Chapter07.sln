@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLibrary", "SharedLibr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetEverywhere", "DotNetEverywhere\DotNetEverywhere.csproj", "{A4A93E8F-57C5-4F3F-90F0-B22625FEFF88}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AotConsole", "AotConsole\AotConsole.csproj", "{487D3969-27F0-42D2-9EB7-C660FE3A1B51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceLinks", "SourceLinks\SourceLinks.csproj", "{7170C969-363A-45CD-9503-3B302079BB16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{A4A93E8F-57C5-4F3F-90F0-B22625FEFF88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4A93E8F-57C5-4F3F-90F0-B22625FEFF88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4A93E8F-57C5-4F3F-90F0-B22625FEFF88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{487D3969-27F0-42D2-9EB7-C660FE3A1B51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{487D3969-27F0-42D2-9EB7-C660FE3A1B51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{487D3969-27F0-42D2-9EB7-C660FE3A1B51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{487D3969-27F0-42D2-9EB7-C660FE3A1B51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7170C969-363A-45CD-9503-3B302079BB16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7170C969-363A-45CD-9503-3B302079BB16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7170C969-363A-45CD-9503-3B302079BB16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7170C969-363A-45CD-9503-3B302079BB16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

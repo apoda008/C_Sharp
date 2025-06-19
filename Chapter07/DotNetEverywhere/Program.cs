@@ -48,6 +48,13 @@ Limitations;
     They must be self contained, so they must embed any libraries they call 
             which increases size
  
+(Reflection) Devs mst annotate their types with [DynamicallyAccessedMembers] to a member 
+    that is only dynamically accessed via reflection and should therefore be 
+    left untrimmed
+
+WARNING - Cross-platform native AOT publishing is not supported. THis means that 
+you must run the publish on the OS that you will deploy to. For example you 
+cannot publish native AOT proj on linux to later run on WIndows and vice versa
  */
 
 
