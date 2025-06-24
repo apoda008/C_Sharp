@@ -97,3 +97,46 @@ WriteLine($"Does it exist? {Directory.Exists(newFolder)}");
 or later the Path class also has an exists method. Bot can be used to check 
  */
 
+//MANAGING FILES
+SectionTitle("Managing Files");
+
+//Define a directory path to output filers starting in the users folder
+string dir = Combine(GetFolderPath(SpecialFolder.Personal), "OutputFiles");
+
+CreateDirectory(dir);
+
+//define file paths 
+string textFile = Combine(dir, "dummy.txt");
+string backupFile = Combine(dir, "dummy.bak");
+
+WriteLine($"Working with: {textFile}");
+
+WriteLine($"Does it exist? {File.Exists(textFile)}");
+
+//create a new file and write a line to it 
+StreamWriter textWriter = File.CreateText(textFile);
+textWriter.WriteLine("Hello C#!");
+textWriter.Close(); //close file and release resources 
+WriteLine($"Does it exist? {File.Exists(textFile)}");
+
+//copy the file, and overwrite if it already exists
+File.Copy(sourceFileName: textFile,
+    destFileName: backupFile,
+    overwrite: true);
+
+WriteLine($"does {backupFile} exist? {File.Exists(backupFile)}");
+
+Write("confirm the files exist, and then press any key...");
+ReadKey(intercept: true);
+
+//delete the files
+File.Delete(textFile);
+WriteLine($"Does it exist? {File.Exists(textFile)}");
+
+//read from the text file backup 
+WriteLine($"Reading content from {backupFile}");
+StreamReader textReader = File.OpenText(backupFile);
+WriteLine(textReader.ReadLine());
+textReader.Close(); //close file and release resources
+
+
