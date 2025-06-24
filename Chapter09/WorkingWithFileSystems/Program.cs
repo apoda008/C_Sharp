@@ -139,4 +139,59 @@ StreamReader textReader = File.OpenText(backupFile);
 WriteLine(textReader.ReadLine());
 textReader.Close(); //close file and release resources
 
+//MANAGEING PATHS
+SectionTitle("Managing Paths");
 
+WriteLine($"Folder name: {GetDirectoryName(textFile)}");
+WriteLine($"File name: {GetFileName(textFile)}");
+WriteLine("FIle Name without Extension: {0}", 
+    GetFileNameWithoutExtension(textFile));
+WriteLine($"File Extension: {GetExtension(textFile)}");
+WriteLine($"Random File Name: {GetRandomFileName()}");
+WriteLine($"Temporary File Name: {GetTempFileName()}");
+
+/*
+ GetTempFileName creates a zero-byte file and returns its name, ready for you 
+to use. GetRandomFileName just returns a filename; it doesnt create the file
+*/
+
+//GETTING FILE INFORMATION 
+SectionTitle("Getting File Information");
+
+FileInfo info = new(backupFile);
+WriteLine($"{backupFile}:");
+WriteLine($"  COntains: {info.Length} bytes");
+WriteLine($"  Last accessed: {info.LastAccessTime}");
+WriteLine($"  Has readonly set to {info.IsReadOnly}");
+
+//R/W with Streams (ABstract and Concrete streams)
+
+//System.IO FileStream Bytes Stored in the filesystem 
+//System.IO MemoryStream bytes stored in the mem in the process 
+//System.Net.Sockets NetworkStream bytes stored at a network location 
+
+//System.Security.Cryptography CryptoStream this encrypts or decrypts the stream 
+//System.IO.Compression GzipStream, DeflateStream These compress and decompress the stream 
+//System.Net.Security AuthenticatedStream This sends credentials accross the stream 
+
+//HELPER STREAMS
+//System.IO StreamReader This reads from the underlying stream as plain text 
+//System.IO StreamWriter This writes to the underlying stream as plain text 
+
+//SystemIO BinaryReader This reads from streams as .NET types. For example,
+//                      the ReadDecimal method reads the next 16 bytes from
+//                      the underlying stream as a decimal value and the
+//                      REadInt32 method reads the next 4 bytes as an int value 
+
+//System.IO BinaryWriter This mwrites to streams as.net types. For example, the write method
+//                      with a decimal parameter writes 16 bytes to the underlying stream,
+//                      and the Write method with an int para writes 4 bytes
+
+//System.Xml XmlReader This reads from the underlying stream using the XML format 
+//System.Xml XmlWriter This writes to the underlying stream using the XML format
+
+//StREAM PIPPING 
+
+/*
+ WriteLine("Hello") => StreamWriter => CrytoStream => GzipStream => FileStream [G7x]
+ */
