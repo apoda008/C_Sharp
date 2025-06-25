@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="Northwind.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Version="8.0.0" Include="Microsoft.EntityFrameworkCore.Sqlite" />
+	</ItemGroup>
+	<ItemGroup>
+		<Using Include="System.Console" Static="true" />
+		
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Verson="8.0.0" Include="Microsoft.EntityFrameworkCore.Design">
+		<PrivateAssests>all</PrivateAssests>
+		<IncludeAssests>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssests>
+		</PackageReference>
+		<ProjectReference Include="..\Northwind.EntityModels\Northwind.EntityModels.csproj" />
+	</ItemGroup>
+
+</Project>
