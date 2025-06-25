@@ -11,7 +11,8 @@ JS and mobile apps often make calls over limited bandwidth so the # of bytes is 
 
 using System.ComponentModel;
 using System.Xml.Serialization; //to use xmlSeralization 
-using Packt.Shared; //to use person 
+using Packt.Shared; //to use person
+using FastJson = System.Text.Json.JsonSerializer; //to use System.Text.Json for JSON serialization
 
 List<Person> people = new()
 {
@@ -103,4 +104,24 @@ using (StreamWriter jsonStream = File.CreateText(jsonPath))
 }//Closes the file stream and releases resources 
 
 OutputFileInfo(jsonPath);
+
+//DESERIALIZING JSON FILES
+SectionTitle("Deserializing from JSON");
+
+await using (FileStream jsonLoad = File.Open(jsonPath, FileMode.Open)) 
+{ 
+    //Deserialize obj graph into a list of Person
+    List<Person>? laodedPeople = 
+        await FastJson.DeserializeAsync(utf8Json: jsonLoad,
+        returnType: typeof(List<Person>)) as List<Person>;
+
+    if (laodedPeople is not null) 
+    { 
+        foreach(Person p in laodedPeople)
+        {
+            WriteLine("{0} has {1} children",
+                p.LastName, p.Children?.Count ?? 0);
+        }
+    }
+}
 
