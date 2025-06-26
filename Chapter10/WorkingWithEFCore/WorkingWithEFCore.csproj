@@ -26,5 +26,10 @@
 		</PackageReference>
 		<ProjectReference Include="..\Northwind.EntityModels\Northwind.EntityModels.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="NorthwindDb.cs">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Compile>
+	</ItemGroup>
 
 </Project>

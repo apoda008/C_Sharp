@@ -1,7 +1,7 @@
 ﻿using Northwind.EntityModels; //to use northwind
 
-using NorthwindDb db = new();
-WriteLine($"Provider: {db.Database.ProviderName}");
+//using NorthwindDb db = new();
+//WriteLine($"Provider: {db.Database.ProviderName}");
 //disposes the database context
 
 /*
@@ -23,5 +23,23 @@ WriteLine($"Provider: {db.Database.ProviderName}");
  *  using reverse engineering
  *  
  *  
+ */
+
+ConfigureConsole();
+QueryingCategories();
+
+//Filtering included entities 
+FilteredIncludes();
+
+//Filtering and sorting products 
+QueryingProducts();
+
+//Getting the generated SQL 
+
+//Logging EF CORE 
+/*
+ * Good Practice: by default, EF core logging will be exclude any data that is sensitive. You can include this data 
+ * by calling the EnableSensitiveDataLogging method, especially during development. You should disable it before 
+ * deploying to production. You can all call EnableDetailedErrors 
  */
 

@@ -18,7 +18,7 @@ public class Product
     [Column("UnitsInStock")]
     public short? Stock { get; set; }
 
-    public bool Descontinued { get; set; }
+    public bool Discontinued { get; set; }
 
     //These two props deine the foreign key relationship
     //to catagories table 
