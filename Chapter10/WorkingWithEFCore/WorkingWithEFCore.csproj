@@ -25,6 +25,7 @@
 		<IncludeAssests>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssests>
 		</PackageReference>
 		<ProjectReference Include="..\Northwind.EntityModels\Northwind.EntityModels.csproj" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.0"/>
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Update="NorthwindDb.cs">

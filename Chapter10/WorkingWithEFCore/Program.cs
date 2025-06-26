@@ -29,10 +29,10 @@ ConfigureConsole();
 QueryingCategories();
 
 //Filtering included entities 
-FilteredIncludes();
+//FilteredIncludes();
 
 //Filtering and sorting products 
-QueryingProducts();
+//QueryingProducts();
 
 //Getting the generated SQL 
 
@@ -43,3 +43,32 @@ QueryingProducts();
  * deploying to production. You can all call EnableDetailedErrors 
  */
 
+//(FOR LOGGING VIEW NORTHWINDDB.CS)
+//FILTERING LOGS BY PROVIDER SPECIFIC VALUES
+//LOGGING WITH QUERY TAGS
+/*
+ IQueryable<Product>? products = db.Products?
+                    .TagWith("Products filtered by price")
+                    .Where(product => product.Cost > price)
+                    .OrderByDescending(product => product.Cost);
+ */
+//GETTING A SINGLE ENTITY
+//GettingOneProduct();
+
+//PATTERN MATCHING WITH LIKE
+//QueryingWithLike();
+
+//GENERATING RANDOM NUMBER IN QUERIES 
+//GetRandomProduct();
+
+//DEFINING GLOBAL FILTERS 
+//Loading and TRACKING PATTERNS WITH EF CORE
+/*
+ *Eagar loading: Load data early 
+ *Lazy loading: load data automatically just before it is needed 
+ *Explicit loading: Load data manually
+ */
+
+//ENABLING LAZY LOADING
+//EXPLICIT LOADING ENTITIES USING LOAD METHOD
+//CONTROL THE TRACKING OF ENTITIES

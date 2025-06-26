@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using Microsoft.EntityFrameworkCore; //to use Include Method
 using Northwind.EntityModels; //to use northwind Category Product
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Security.Cryptography; // to use Collection entry 
 
 partial class Program 
 {
@@ -11,8 +13,34 @@ partial class Program
         SectionTitle("Categories and how many products they have");
 
         //a query to get all categories and their related products
-        IQueryable<Category>? categories = db.Categories?.Include(c => c.Products);
+        IQueryable<Category>? categories; //= db.Categories; //.Include(c => c.Products);
 
+        //-------------EXPLICIT-----------------
+
+        db.ChangeTracker.LazyLoadingEnabled = false;
+
+        Write("Enable eager loading? (y/n): ");
+        bool eagarLoading = (ReadKey().Key == ConsoleKey.Y);
+        bool explicitLoading = false;
+        WriteLine();
+
+        if (eagarLoading)
+        {
+            categories = db.Categories?.Include(c => c.Products);
+        }
+        else 
+        {
+            categories = db.Categories;
+            Write("Enable Explicit loading? (Y/N): ");
+            explicitLoading = (ReadKey().Key == ConsoleKey.Y);
+            WriteLine();
+        }
+
+        
+        
+        //--------------------------------------
+        
+        
         if(categories is null || !categories.Any())
         {
             Fail("No categories found");
@@ -21,7 +49,22 @@ partial class Program
 
         //execute query and enumerate results 
         foreach (Category c in categories) 
-        { 
+        {
+            if (explicitLoading)
+            {
+                Write($"Explicitlly load products for {c.CategoryName}? (Y/N): ");
+                ConsoleKeyInfo key = ReadKey();
+                WriteLine();
+
+                if (key.Key == ConsoleKey.Y)
+                {
+                    CollectionEntry<Category, Product> products = db.Entry(c).Collection(c2 => c2.Products);
+                    if (!products.IsLoaded) products.Load();
+                }
+                /*
+                 Carefully consider which loading patter is best for your code. Lazy loading could literally make you a lazy dev!
+                 */
+        }
             WriteLine($"{c.CategoryName} has {c.Products.Count} products");
         }
     }
@@ -105,4 +148,97 @@ partial class Program
                 p.ProductId, p.ProductName, p.Cost, p.Stock);
         }
     }
+
+    private static void GettingOneProduct() 
+    { 
+        using NorthwindDb db = new();
+
+        SectionTitle("Getting a single product by ID");
+
+        string? input;
+        int id;
+
+        do 
+        { 
+            Write("Enter a product ID: ");
+            input = ReadLine();
+        } while (!int.TryParse(input, out id));
+
+        Product? product = db.Products?
+            .First(product => product.ProductId == id);
+
+        Info($"First: {product?.ProductName}");
+
+        if(product is null) Fail("No product found using First");
+
+        product = db.Products?
+            .Single(product => product.ProductId == id);
+
+        Info($"Single: {product?.ProductName}");
+
+        if(product is null) Fail("No product found using Single");
+        //If you do not need to make sure that only one entity matches, use
+        //First instead of Single to avoid retrieving two records
+
+    }
+
+    private static void QueryingWithLike() 
+    { 
+        using NorthwindDb db = new();
+
+        SectionTitle("Pattern matching with LIKE");
+
+        Write("Enter part of a product name: ");
+
+        string? input = ReadLine();
+
+        if(string.IsNullOrWhiteSpace(input))
+        {
+            Fail("No input provided");
+            return;
+        }
+
+        IQueryable<Product>? products = db.Products?
+            .Where(p => EF.Functions.Like(p.ProductName, $"%{input}%"));
+
+        if (products is null || !products.Any())
+        {
+            Fail("No products found");
+            return;
+        }
+
+        foreach(Product p in products)
+        {
+            WriteLine("{0} has {1} units in stock. Discontinued: {2}", 
+                p.ProductName, p.Stock, p.Discontinued);
+        }
+    }
+
+    private static void GetRandomProduct() 
+    { 
+        using NorthwindDb db = new();
+
+        SectionTitle("Getting a random product");
+
+        int? rowCount = db.Products?.Count();
+
+        if (rowCount is null) 
+        { 
+            Fail("Products table is empty");    
+            return;
+        }
+
+        Product? p = db.Products?.FirstOrDefault(
+            p => p.ProductId == (int)(EF.Functions.Random() * rowCount));
+
+        if (p is null) 
+        { 
+            Fail("Product not found");
+            return;
+        }
+
+        WriteLine($"Random product: {p.ProductId} - {p.ProductName}");
+    }
+
+        
 }

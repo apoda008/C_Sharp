@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics; // to use RelationalEventID
 
 namespace Northwind.EntityModels;
 
@@ -15,6 +16,19 @@ public class  NorthwindDb : DbContext
         string connectionString = $"Data Source ={path};";
         WriteLine($"Connection: {connectionString}");
         optionsBuilder.UseSqlite(connectionString);
+        optionsBuilder.LogTo(WriteLine, new[] { RelationalEventId.CommandExecuting }) 
+#if DEBUG
+            .EnableSensitiveDataLogging() //Include SQL parameters
+            .EnableDetailedErrors()
+#endif
+            ;
+
+        optionsBuilder.UseLazyLoadingProxies();
+        /*Logto requires an Action<string> delegate. EF Core will call this delegate, 
+         * passing a string value for each log message. Passing the COnsole class 
+         * Writeline method, therefore, tells the logger to write each method to the 
+         * console
+         */
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -34,5 +48,9 @@ public class  NorthwindDb : DbContext
                 .Property(product => product.Cost)
                 .HasConversion<double>();
         }
+
+        //a global filter to remove discontinured products 
+        modelBuilder.Entity<Product>()
+            .HasQueryFilter(p => !p.Discontinued);
     }
 }
