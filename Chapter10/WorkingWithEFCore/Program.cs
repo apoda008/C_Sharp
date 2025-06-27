@@ -26,7 +26,7 @@
  */
 
 ConfigureConsole();
-QueryingCategories();
+//QueryingCategories();
 
 //Filtering included entities 
 //FilteredIncludes();
@@ -71,4 +71,42 @@ QueryingCategories();
 
 //ENABLING LAZY LOADING
 //EXPLICIT LOADING ENTITIES USING LOAD METHOD
+//==========LAST COMMIT=======================
+
 //CONTROL THE TRACKING OF ENTITIES
+//---> Identity Resolution: EF Core resolves each entity instance by reading its unique primary key value. This ensures
+//no ambiguities about the identities or relationships between them 
+
+/*
+ * EF Core can only track entities with keys because it uses the key to uniquely identify the entity in the database. 
+ * Keyless entities, like those returned by views, are never tracked in any scenario
+ */
+
+//LAZYLOADINGWITHNOTRACKING
+//LazyLoadingWithNoTracking();
+/*
+ C: for create
+ R: for Retrieve (or Read)
+ U: for Update
+ D: for Delete
+ 
+ */
+
+//INSERTING ENTITIES 
+var resultAdd = AddProduct(categoryId: 6, productName: "Bob's Burgers", price: 500M, stock: 72);
+
+if (resultAdd.affected == 1) 
+{ 
+    WriteLine($"Add prodcut successful with ID: {resultAdd.productId}");
+
+}
+
+ListProducts(productIdsToHighligh: new[] {resultAdd.productId});
+
+/*
+ When the new product is first created in memory and tracked by the EF core change tracker, it has a state of ADded and 
+its ID is 0. After the call to SaveChanges, it has a state of Unchanged and its ID is 78, the value assigned by the 
+database
+ */
+
+//UPDATING ENTITIES
