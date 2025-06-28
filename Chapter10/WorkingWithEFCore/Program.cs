@@ -92,16 +92,16 @@ ConfigureConsole();
  
  */
 
-//INSERTING ENTITIES 
-var resultAdd = AddProduct(categoryId: 6, productName: "Bob's Burgers", price: 500M, stock: 72);
+//INSERTING ENTITIES  ==LAST COMMIT===
+//var resultAdd = AddProduct(categoryId: 6, productName: "Bob's Burgers", price: 500M, stock: 72);
 
-if (resultAdd.affected == 1) 
-{ 
-    WriteLine($"Add prodcut successful with ID: {resultAdd.productId}");
+//if (resultAdd.affected == 1)
+//{
+//    WriteLine($"Add prodcut successful with ID: {resultAdd.productId}");
 
-}
+//}
 
-ListProducts(productIdsToHighligh: new[] {resultAdd.productId});
+//ListProducts(productIdsToHighligh: new[] { resultAdd.productId });
 
 /*
  When the new product is first created in memory and tracked by the EF core change tracker, it has a state of ADded and 
@@ -110,3 +110,63 @@ database
  */
 
 //UPDATING ENTITIES
+//var resultUpdate = IncreaseProductPrice(
+//    productNameStartsWith: "Bob", amount: 20M);
+
+//if (resultUpdate.affected == 1) 
+//{ 
+//    WriteLine($"Increased price success for ID: {resultUpdate.productId}");
+//}
+
+//ListProducts(productIdsToHighligh: new[] { resultUpdate.productId });
+
+//DELETING ENTITIES
+//RemoveRange is more effecient when you want to delete multiple entities
+//WriteLine("About to delete all products whose name starts with Bob");
+//Write("Press enter to continue or any other key to exit");
+
+//if (ReadKey(intercept: true).Key == ConsoleKey.Enter)
+//{
+//    int deleted = DeleteProducts(productNameStartsWith: "Bob");
+//    WriteLine($"{deleted} products were deleted");
+//}
+//else 
+//{
+//    WriteLine("Delete was canceled");
+//}
+
+
+//MORE EFFECIENT DELETES AND UPDATES
+/*
+ * ExecuteUpdate and ExecuteDelete can only act on a single table, so although you can write quite unique LINQ queries, 
+ * they can only update or delete from a single table 
+ * 
+ * you can chain multiple calls to SetProperty in the same query to update multiple properties in one command. 
+ */
+
+//var resultUpdateBetter = IncreaseProductPricesBetter(
+//    productNameStartsWith: "Bob", amount: 20M);
+
+//if (resultUpdateBetter.affected > 0) 
+//{
+//    WriteLine("Increase product prises successful");
+//}
+
+//ListProducts(productIdsToHighligh: resultUpdateBetter.productIds);
+
+WriteLine("About to delete all products whose name starts with Bob");
+Write("Press enter to continue or any other key to exit");
+
+if (ReadKey(intercept: true).Key == ConsoleKey.Enter)
+{
+    int deleted = DeleteProductsBetter(productNameStartsWith: "Bob");
+    WriteLine($"{deleted} products were deleted");
+}
+else 
+{
+    WriteLine("Delete was canceled");
+}
+/*
+ WARNING: if you mix traditional tracked changes with ExecuteUpdate and ExecuteDelete methods, then note that they are 
+not kept synchronized. The change tracker will not know what you have updated and deleted using those methods
+ */
