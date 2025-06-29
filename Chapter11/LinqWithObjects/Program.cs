@@ -67,3 +67,13 @@ Multiset, aka bag: is a collection of one or more objects that can have duplicat
 WorkingWithSet();
 
 //SO FAR THIS HAS BEEN WORK WITH IN MEMORY OBJECTS NOW IT WILL BE DATABASES FOLLOWING THIS
+//==========LAST COMMIT===========//
+
+//USING LINQ AND EF CORE
+/*
+ Projection: LINQ queries that filer and sort, but none that change the shape of the items in the sequence  
+ ALso: its about projecting items of one shape into another shape.
+ */
+
+
+
