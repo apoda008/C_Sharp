@@ -1,2 +1,16 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿ConfigureConsole();
+
+//FILTERING AND SORTING SEQUENCES
+//FilterAndSort();
+
+//JOINING, GROUPING, AND LOOKUPS
+//JOINING SEQUENCES
+//JoinCatagoriesAndProducts();
+
+//GROUP-JOINING SEQUENCES 
+//GroupJoinCategoriesAndProducts();
+
+//GROUPING FOR LOOKUPS
+ProductsLookUp();
+
+//AGGREGATING AND PAGING SEQUENCES
