@@ -1,0 +1,34 @@
+﻿@page
+@functions
+{
+    public string? DayName { get; set; }
+    
+    public void OnGet() 
+    {
+        ViewData["Title"] = "Northwind B2B";
+        DayName = DateTime.Now.ToString("dddd");
+    }
+    @*
+    When you define properties in a @fucntions block, you are adding 
+    code to an automatically generated class named Pages_<razorpagename>.
+    In this case the class name would be Pages_index. The class is 
+    automatically given a property named Model that represents itself. 
+    You can use DayName, this.DayName or Model. Dayname to refer to the 
+    property in the code or in the HTML markup
+    *@
+}
+
+
+<!doctype html>
+        <div class="jumbotron">
+            <h1 class="display-3">Welcome to @ViewData["Title"]</h1>
+            <p class="lead">We supply products to our customers.</p>
+            <hr />
+           
+            <p>It's @DayName! Our customers include restaurants, hotels, and cruise lines.</p>
+            <p>
+                <a class="btn btn-primary" href="suppliers">
+                   Learn More about out suppliers!
+                </a>
+            </p>
+        </div>
