@@ -1,7 +1,11 @@
-#region Configure the web server hose and services
+using Northwind.EntityModels; // to use AddNorthwindContext method
+
+#region Configure the web server host and services
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
+builder.Services.AddNorthwindContext();
+
 
 var app = builder.Build();
 
@@ -17,6 +21,33 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+//Implementing an anonymous inline delegate as middleware
+//to intercept HTTP requests and responses
+app.Use(async (HttpContext context, Func<Task> next) => 
+{
+    RouteEndpoint? rep = context.GetEndpoint() as RouteEndpoint;
+
+    if (rep is not null) 
+    {
+        WriteLine($"Endpoint name: {rep.DisplayName}");
+        WriteLine($"Endpoint route pattern: {rep.RoutePattern.RawText}");
+    }
+
+    if (context.Request.Path == "/bonjour") 
+    {
+        //In the case of a match on URL path, this becomes a terminating
+        //delegate that returns so does not call the next delegate
+        await context.Response.WriteAsync("Bonjour Model!");
+        return;
+    }
+
+    //we could modify the request before calling the next delegate
+    await next();
+
+    //we could modify the response after calling the next delegate
+});
+
+
 app.UseHttpsRedirection();
 
 app.UseDefaultFiles(); //index.html, default.html and so on
@@ -27,6 +58,7 @@ app.UseStaticFiles();
 
 
 app.MapRazorPages();
+
 //app.MapGet("/", () => "Hello World!");
 app.MapGet("/hello", () => $"Environment is {app.Environment.EnvironmentName}");
 
@@ -69,6 +101,12 @@ TempData this dictionary exists during the lifetime of an HTTP request and the n
 same browser. This allows a part of the website like a controller to store some data in it, respond to the 
 browser with a redirect and then another part of the website can read the data on the second request. Only 
 the browser that made the original request can access this data
+
+GOOD PRACTIE: When using tools that automatically 'fix' problems without telling you, review your project 
+file for unexpected elements when you unexpected results happen
+ 
+Endpoint routing gets its name because it represents the route table as a compiled tree of endpoints that 
+can be walked efficiently by the routing system.  
  */
 
 
@@ -80,4 +118,11 @@ the browser that made the original request can access this data
 //RAZOR PAGES
 //add code to razor pages 
 //using shared layout w/ razor pages
-//Configuring Files included in an ASP.NET Core Project
+//Configuring Files included in an ASP.NET Core Project --LAST COMMIT--
+//using entity framework core with ASP.NET core
+//Enabling a model to insert entities 
+//Defining a form to insert a new supplier
+//injecting a dependecy service into a razor page
+//Understanding/configuring endpoint routing
+//setting up HTTP pipeline
+//implementing an anon inline delegate as middleware
