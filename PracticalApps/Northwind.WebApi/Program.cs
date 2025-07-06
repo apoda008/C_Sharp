@@ -1,9 +1,14 @@
 using Microsoft.AspNetCore.Mvc.Formatters; //to use IOutputFormatter
 using Northwind.EntityModels; //to use AddNorthwindContext
+using Microsoft.Extensions.Caching.Memory; // to use IMemoryCache and so on
+using Northwind.WebApi.Repositories; // tp use IcustomerREpository 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddSingleton<IMemoryCache>(new
+    MemoryCache(new MemoryCacheOptions()));
 
 builder.Services.AddNorthwindContext();
 
@@ -32,6 +37,7 @@ builder.Services.AddControllers(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 var app = builder.Build();
 
@@ -58,5 +64,29 @@ app.Run();
  * singleton: these ervices are usually created the first time they are requested and then shared, although you can provide 
  * an instance at the time of registration too
  * 
+ * In real web service, you should use a distributed chase like Redis, an open source data structore store that can be used 
+ * as a high performance high availability database, cache or message broker. 
  * 
+ * Short-Cicuit: When routing matches a request to an endpoint it lets the rest of the middleware pipeline run before invoking 
+ * the endpoint logic. You can invoke the endpoint immediately and return the response
+ * 
+ * Ex: 
+ *  app.MapGet("/". () => "Hello World").ShortCircuit();
+ * 
+ * GOOD PRACTICE: Decorate action methods with the [ProducesResponseType] attribute to indicate all the known types and HTTP 
+ * status codes that the client should expect in a response. This information can then be publicly exposed to document how a 
+ * client should interact with your web service. Think of it as part of your formal documentation. 
+ * 
+ * GOOD PRACTICE: Our repository uses a database context that is registered as a scoped dependency. You can only use scoped 
+ * dependencies inside other scoped dependencies, so we cannot register the repository as a singleton. 
+ * 
+ * 
+ * GIT: 
+ * Creating data repositories with caching for entities
+ * Routing WebServices 
+ * Route Constraints
+ * short-circuit routs in ASP.NET Core 8
+ * Improved route tooling in ASP.NET Core 8
+ * Understanding action method return types
+ * Configuring the customer repository and Web API controller
  * **/
