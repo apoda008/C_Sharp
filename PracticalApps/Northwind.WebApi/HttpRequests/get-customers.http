@@ -1,0 +1,20 @@
+### Configure a variable for the web service base address
+@base_address = http://localhost:5151/api/customers/
+###THIS IS SUPPOSE TO BE HTTPS but it wont work
+
+
+### Make a GET request to the base address
+GET {{base_address}}
+
+### GEt Customers in germany 
+GET {{base_address}}?country=Germany
+
+### GET customers in USA in XML format
+GET {{base_address}}?country=USA
+Accept: application/xml
+
+### GET alfreds futterkiste
+GET {{base_address}}ALFKI
+
+### get a nonexists customer 
+GET {{base_address}}abcxy

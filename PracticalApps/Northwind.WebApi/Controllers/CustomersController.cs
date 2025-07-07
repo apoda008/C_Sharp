@@ -62,7 +62,7 @@ public class CustomersController : Controller
     //BODY: Customer (JSON, XML)
     [HttpPost]
     [ProducesResponseType(201, Type = typeof(Customer))]
-    [ProducesDefaultResponseType(400)]
+    [ProducesResponseType(400)]
     public async Task<IActionResult> Create([FromBody] Customer c) 
     {
         if (c == null) 
@@ -84,4 +84,67 @@ public class CustomersController : Controller
                 value: addedCustomer);
         }
     }
+
+    //PUT: api/customers/[id[
+    //BODY: Customer (JSON, XML)
+    [HttpPut("{id}")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> Update(
+        string id, [FromBody] Customer c)
+    {
+        id = id.ToUpper();
+        c.CustomerId = c.CustomerId.ToUpper();
+        if (c == null || c.CustomerId != id) 
+        {
+            return BadRequest(); //400 bad request
+        }
+        Customer? existing = await _repo.RetrieveAsync(id);
+        if (existing == null) 
+        { 
+            return NotFound(); //404 resource not found
+        }
+        await _repo.UpdateAsync(c);
+        return new NoContentResult(); //204 no content
+    }
+
+    //DELETE: api/customers/[id]
+    [HttpDelete]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> Delete(string id) 
+    {
+        //Take control of problem details 
+        if (id == "bad") 
+        {
+            ProblemDetails problemDetails = new()
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Type = "https://localhost:5151/customers/failed-to-delete",
+                Title = $"Customer ID {id} found but failed to delete",
+                Detail = "More details like Company Name, Country and so on",
+                Instance = HttpContext.Request.Path
+            };
+            return BadRequest(problemDetails); //400 bad request
+        }
+
+        Customer? existing = await _repo.RetrieveAsync(id);
+        if (existing == null) 
+        {
+            return NotFound(); //404 resource not found
+        }
+        bool? deleted = await _repo.DeleteAsync(id);
+        if (deleted.HasValue && deleted.Value) //short curcuit AND
+        {
+            return new NoContentResult(); //204 no content
+        }
+        else 
+        {
+            return BadRequest(// 400 bad request
+                $"Customer {id} was found but failed to delet");
+        }
+    }
 }
+    

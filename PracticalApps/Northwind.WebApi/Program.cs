@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc.Formatters; //to use IOutputFormatter
 using Northwind.EntityModels; //to use AddNorthwindContext
 using Microsoft.Extensions.Caching.Memory; // to use IMemoryCache and so on
-using Northwind.WebApi.Repositories; // tp use IcustomerREpository 
+using Northwind.WebApi.Repositories;
+using Swashbuckle.AspNetCore.SwaggerUI; // tp use IcustomerREpository 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,7 +46,15 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => 
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json",
+            "Northwind Service API Version 1");
+
+        c.SupportedSubmitMethods(new[] {
+        SubmitMethod.Get, SubmitMethod.Post,
+        SubmitMethod.Put, SubmitMethod.Delete});
+    });
 }
 
 app.UseHttpsRedirection();
@@ -89,4 +98,14 @@ app.Run();
  * Improved route tooling in ASP.NET Core 8
  * Understanding action method return types
  * Configuring the customer repository and Web API controller
+ * ====LAST GIT COMMIT======
+ * Documenting and testing web services
+ * specifying problem details
+ * controlling XML serialization
+ * Testing GET requests using browser
+ * Making Get requests using HTTP/REST tools
+ * Making other requests using HTTP/REST tools
+ * Passing environment variables
+ * Understanding swagger
+ * Enabling HTTP Logging
  * **/
