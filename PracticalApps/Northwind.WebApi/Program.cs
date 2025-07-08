@@ -3,10 +3,18 @@ using Northwind.EntityModels; //to use AddNorthwindContext
 using Microsoft.Extensions.Caching.Memory; // to use IMemoryCache and so on
 using Northwind.WebApi.Repositories;
 using Swashbuckle.AspNetCore.SwaggerUI; // tp use IcustomerREpository 
+using Microsoft.AspNetCore.HttpLogging; // to use HttpLoggingFields
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddHttpLogging(options =>
+{ 
+    options.LoggingFields = HttpLoggingFields.All;
+    options.RequestBodyLogLimit = 4096; //default is 32k
+    options.ResponseBodyLogLimit = 4096; //default is 32k
+});
 
 builder.Services.AddSingleton<IMemoryCache>(new
     MemoryCache(new MemoryCacheOptions()));
@@ -41,6 +49,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 var app = builder.Build();
+
+app.UseHttpLogging();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -89,6 +99,8 @@ app.Run();
  * GOOD PRACTICE: Our repository uses a database context that is registered as a scoped dependency. You can only use scoped 
  * dependencies inside other scoped dependencies, so we cannot register the repository as a singleton. 
  * 
+ * Although the Default log level might be set to information, more specific configs take priority. For example; any logging 
+ * systems in the Microsoft.AspNetCore namespace will use the Warning level. 
  * 
  * GIT: 
  * Creating data repositories with caching for entities
@@ -108,4 +120,7 @@ app.Run();
  * Passing environment variables
  * Understanding swagger
  * Enabling HTTP Logging
+ * ====LAST GIT======
+ * 
+ * 
  * **/
