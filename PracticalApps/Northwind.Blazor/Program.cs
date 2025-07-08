@@ -1,9 +1,12 @@
 using Northwind.Blazor.Components;
+using Northwind.Blazor.Services; //to use INorthwindService
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents();
+builder.Services.AddNorthwindContext();
+builder.Services.AddTransient<INorthwindService, NorthwindServiceServerSide>();
 
 var app = builder.Build();
 
